@@ -1,0 +1,14 @@
+BEGIN;
+
+ALTER TABLE users
+    ADD COLUMN IF NOT EXISTS hashed_password VARCHAR(255) NOT NULL DEFAULT '',
+    ADD COLUMN IF NOT EXISTS full_name VARCHAR(150),
+    ADD COLUMN IF NOT EXISTS is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    ADD COLUMN IF NOT EXISTS role VARCHAR(50) NOT NULL DEFAULT 'USER';
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_users_email_normalized
+    ON users (LOWER(email));
+CREATE UNIQUE INDEX IF NOT EXISTS idx_users_username_normalized
+    ON users (LOWER(username));
+
+COMMIT;
